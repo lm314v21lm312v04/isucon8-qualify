@@ -43,6 +43,13 @@
     src: /etc/h2o/default-h2o.conf
     dest: /etc/h2o/h2o.conf
 
+- name: Put h2o.service
+  become: yes
+  become_user: root
+  copy:
+    src: h2o.service
+    dest: /lib/systemd/system/h2o.service
+
 - name: Put torb.nodejs.service
   become: yes
   become_user: root
@@ -92,43 +99,3 @@
     chdir: /home/isucon/torb/webapp/nodejs
   shell: |
     bash -lc "/home/isucon/local/node/bin/npm install"
-
-- name: Install for torb.go
-  become: yes
-  become_user: isucon
-  args:
-    chdir: /home/isucon/torb/webapp/go
-  shell: |
-    bash -lc "make clean && make deps && make"
-
-- name: Install for torb.perl
-  become: yes
-  become_user: isucon
-  args:
-    chdir: /home/isucon/torb/webapp/perl
-  shell: |
-    bash -lc "carton install"
-
-- name: Install for torb.php
-  become: yes
-  become_user: isucon
-  args:
-    chdir: /home/isucon/torb/webapp/php
-  shell: |
-    bash -lc "composer install"
-
-- name: Install for torb.python
-  become: yes
-  become_user: isucon
-  args:
-    chdir: /home/isucon/torb/webapp/python
-  shell: |
-    bash -lc "sh setup.sh"
-
-- name: Install for torb.ruby
-  become: yes
-  become_user: isucon
-  args:
-    chdir: /home/isucon/torb/webapp/ruby
-  shell: |
-    bash -lc "bundle install --path=.bundle"
